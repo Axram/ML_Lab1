@@ -18,19 +18,21 @@ def draw_tree(dataset):
 def build_and_check(dataset, testset):
         "Builds a dec tree from datast and checks the performance on test set"
         t = dt.buildTree(dataset, m.attributes)
-        performance = dt.check(t, testset)
-        return t, performance
+        performance_train = dt.check(t, dataset)
+        performance_test = dt.check(t, testset)
+        return t, [performance_train, performance_test]
 
 def print_table(row_names, col_names, data):
         "Print a table with arbitrary number of columns and one row"
-        print("\t\t", end = "")
+        print("\t\t\t", end = "")
         for i in col_names:
                 print(i, end = "\t")
         print("")
-        for i in row_names:
-                print(i, end = "\t")
-        for i in data:
-                print(round(i, 2), end = "\t")
+        for index, name in enumerate(row_names):
+                print(name, end = "\t")
+                for i in data[index]:
+                        print(round(i, 2), end = "\t")
+                print("")
         print("")
 
 ## Assignment 1: Calculate entropy
@@ -66,9 +68,10 @@ print("Assignment 3")
 monk1_tree, monk1_performance = build_and_check(m.monk1, m.monk1test)
 monk2_tree, monk2_performance = build_and_check(m.monk2, m.monk2test)
 monk3_tree, monk3_performance = build_and_check(m.monk3, m.monk3test)
-print_table(["Performance"],
+print_table(["Performance Train", "Performance Test"],
             ["MONK1", "MONK2", "MONK3"],
-            [monk1_performance, monk2_performance, monk3_performance])
+            [[monk1_performance[0], monk2_performance[0], monk3_performance[0]],
+            [monk1_performance[1], monk2_performance[1], monk3_performance[1]]])
 
 draw_tree(m.monk1)
 #draw_tree(m.monk2)
