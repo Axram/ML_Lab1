@@ -1,0 +1,13 @@
+Notes for the questions posed in the lab assignment
+--------------------------------------------------
+Q1: Which of the three problems is most difficult to learn?
+
+A1:
+
+--------------------------------------------------
+Q2: Based on the results of assignment 2, which attribute should be used
+for splitting the examples at the root node?
+
+A2: 		  Dataset	   MONK1  	   MONK2		MONK3
+			  Variable	   a5		   a5			a2
+
