@@ -7,6 +7,12 @@ def print_average_gains(av_gain, av_gain_name = "", print_range = 6):
         for i in range(print_range):
                 print(round(av_gain[i], 4), end = "\t")
         print("")
+
+def draw_tree(dataset):
+        t = dt.buildTree(dataset, m.attributes)
+        dw.drawTree(t)
+        return t
+
         
 # Assignment 1 calculate entropy
 
@@ -37,6 +43,14 @@ print_average_gains(M2, "M2")
 print_average_gains(M3, "M3")	
 
 # Assignment 3: Build decision trees of all data sets
-t = dt.buildTree(m.monk1, m.attributes)
-print(dt.check(t, m.monk1test))
-dw.drawTree(t)
+draw_tree(m.monk1)
+#draw_tree(m.monk2)
+#draw_tree(m.monk3)
+
+
+
+
+
+        
+
+
