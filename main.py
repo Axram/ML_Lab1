@@ -1,6 +1,7 @@
 import monkdata as m
 import dtree as dt
 import drawtree as dw
+import random
 
 def print_average_gains(av_gain, av_gain_name = "", print_range = 6):
         " Prints with nice format"
@@ -16,11 +17,17 @@ def draw_tree(dataset):
         return t
 
 def build_and_check(dataset, testset):
-        "Builds a dec tree from datast and checks the performance on test set"
+        "Builds a dec tree from dataset and checks the performance on test set"
         t = dt.buildTree(dataset, m.attributes)
         performance_train = dt.check(t, dataset)
         performance_test = dt.check(t, testset)
         return t, [performance_train, performance_test]
+
+def partition(data, fraction):
+        ldata = list(data)
+        random.shuffle(ldata)
+        breakPoint = int(len(ldata)*fraction)
+        return ldata[:breakPoint], ldata[breakPoint:]
 
 def print_table(row_names, col_names, data):
         "Print a table with arbitrary number of columns and one row"
@@ -35,6 +42,20 @@ def print_table(row_names, col_names, data):
                 print("")
         print("")
 
+def prune(tree, testdata, performance_ref):
+        alternatives = dt.allPruned(tree)
+        best_per = 0
+        best_tree = None
+        for subtree in alternatives:
+                performance = dt.check(subtree, testdata)
+                if performance > best_per:
+                        best_per = performance
+                        best_tree = subtree
+        if best_per >= performance_ref:
+                return prune(best_tree)
+        else:
+                return tree
+        
 ## Assignment 1: Calculate entropy
 
 print("\nAssignment 1")
@@ -73,11 +94,14 @@ print_table(["Performance Train", "Performance Test"],
             [[monk1_performance[0], monk2_performance[0], monk3_performance[0]],
             [monk1_performance[1], monk2_performance[1], monk3_performance[1]]])
 
-draw_tree(m.monk1)
+#draw_tree(m.monk1)
 #draw_tree(m.monk2)
 #draw_tree(m.monk3)
 
-# Check performance
+## Assignment 4: Prune tree and plot class error as function of partition size
+
+ratio = 0.6
+
 
 
 
