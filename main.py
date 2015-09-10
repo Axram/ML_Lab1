@@ -16,12 +16,10 @@ def draw_tree(dataset):
         dw.drawTree(t)
         return t
 
-def build_and_check(dataset, testset):
+def check_tree_performance(tree, testset):
         "Builds a dec tree from dataset and checks the performance on test set"
-        t = dt.buildTree(dataset, m.attributes)
-        performance_train = dt.check(t, dataset)
-        performance_test = dt.check(t, testset)
-        return t, [performance_train, performance_test]
+        performance_test = dt.check(tree, testset)
+        return performance_test
 
 def partition(data, fraction):
         ldata = list(data)
@@ -86,15 +84,19 @@ print_average_gains(M3, "M3")
 
 ## Assignment 3: Build decision trees of all data sets
 print("Assignment 3")
-monk1_tree, monk1_performance = build_and_check(m.monk1, m.monk1test)
-monk2_tree, monk2_performance = build_and_check(m.monk2, m.monk2test)
-monk3_tree, monk3_performance = build_and_check(m.monk3, m.monk3test)
+monk1_tree = dt.buildTree(m.monk1, m.attributes)
+monk1_performance = check_tree_performance(monk1_tree, m.monk1test)
+monk1_train_per = check_tree_performance(monk1_tree, m.monk1)
+monk2_tree = dt.buildTree(m.monk2, m.attributes)
+monk2_performance = check_tree_performance(monk2_tree, m.monk2test)
+monk2_train_per = check_tree_performance(monk2_tree, m.monk2)
+monk3_tree = dt.buildTree(m.monk3, m.attributes)
+monk3_performance = check_tree_performance(monk3_tree, m.monk3test)
+monk3_train_per = check_tree_performance(monk3_tree, m.monk3)
 print_table(["Performance Train", "Performance Test"],
             ["MONK1", "MONK2", "MONK3"],
-            [[monk1_performance[0], monk2_performance[0], monk3_performance[0]],
-            [monk1_performance[1], monk2_performance[1], monk3_performance[1]]])
-
-#draw_tree(m.monk1)
+            [[monk1_train_per, monk2_train_per, monk3_train_per],
+            [monk1_performance, monk2_performance, monk3_performance]])
 #draw_tree(m.monk2)
 #draw_tree(m.monk3)
 
