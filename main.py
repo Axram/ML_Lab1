@@ -50,7 +50,7 @@ def prune(tree, testdata, performance_ref):
                         best_per = performance
                         best_tree = subtree
         if best_per >= performance_ref:
-                return prune(best_tree)
+                return prune(best_tree, testdata, performance_ref)
         else:
                 return tree
         
@@ -97,14 +97,19 @@ print_table(["Performance Train", "Performance Test"],
             ["MONK1", "MONK2", "MONK3"],
             [[monk1_train_per, monk2_train_per, monk3_train_per],
             [monk1_performance, monk2_performance, monk3_performance]])
+# Draw trees
+#draw_tree(m.monk1)
 #draw_tree(m.monk2)
 #draw_tree(m.monk3)
 
 ## Assignment 4: Prune tree and plot class error as function of partition size
 
-ratio = 0.6
+test, val = partition(m.monk1, 0.5)
+tree = dt.buildTree(test, m.attributes)
+per_ref = check_tree_performance(tree, m.monk1test)
+best = prune(tree, val, per_ref)
 
-
+print(best)
 
 
         
