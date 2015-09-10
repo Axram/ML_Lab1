@@ -108,9 +108,11 @@ test, val = partition(m.monk1, 0.5)
 tree = dt.buildTree(test, m.attributes)
 per_ref = check_tree_performance(tree, m.monk1test)
 best = prune(tree, val, per_ref)
+per_pruned = check_tree_performance(best, m.monk1test)
 
-print(best)
-
+print_table(["Unpruned decision tree", "Pruned decision tree"],
+            ["MONK1"],
+            [[per_ref],[per_pruned]])
 
         
 
