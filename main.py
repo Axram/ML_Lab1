@@ -40,6 +40,14 @@ def print_table(row_names, col_names, data):
                 print("")
         print("")
 
+def make_pruned(dataset, testset, ratio = 0.5):
+        test, val = partition(dataset, ratio)
+        tree = dt.buildTree(test, m.attributes)
+        per_ref = check_tree_performance(tree, testset)
+        best = prune(tree, val, per_ref)
+        per_pruned = check_tree_performance(best, testset)
+        return best, per_ref, per_pruned
+
 def prune(tree, testdata, performance_ref):
         alternatives = dt.allPruned(tree)
         best_per = 0
@@ -104,15 +112,19 @@ print_table(["Performance Train", "Performance Test"],
 
 ## Assignment 4: Prune tree and plot class error as function of partition size
 
-test, val = partition(m.monk1, 0.5)
-tree = dt.buildTree(test, m.attributes)
-per_ref = check_tree_performance(tree, m.monk1test)
-best = prune(tree, val, per_ref)
-per_pruned = check_tree_performance(best, m.monk1test)
+lbest = []
+lper_ref = []
+lper_pruned = []
+for i in [(m.monk1, m.monk1test), (m.monk2, m.monk2test), (m.monk3, m.monk3test) ]:
+        best, per_ref, per_pruned = make_pruned(i[0], i[1], 0.5)
+        lbest.append(best)
+        lper_ref.append(per_ref)
+        lper_pruned.append(per_pruned)
+print(lper_ref+lper_pruned)
 
 print_table(["Unpruned decision tree", "Pruned decision tree"],
-            ["MONK1"],
-            [[per_ref],[per_pruned]])
+            ["MONK1", "MONK2", "MONK3"],
+            [lper_ref, lper_pruned])
 
         
 
