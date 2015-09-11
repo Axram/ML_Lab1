@@ -50,9 +50,11 @@ def make_pruned(dataset, testset, ratio = 0.5):
         '''
         test, val = partition(dataset, ratio)
         tree = dt.buildTree(test, m.attributes)
-        per_ref = check_tree_performance(tree, testset)
+        #per_ref = check_tree_performance(tree, testset)
+        per_ref = check_tree_performance(tree, val)
         best = prune(tree, val, per_ref)
-        per_pruned = check_tree_performance(best, testset)
+        #per_pruned = check_tree_performance(best, testset)
+        per_pruned = check_tree_performance(best, val)
         return best, per_ref, per_pruned
 
 def prune(tree, testdata, performance_ref):
@@ -128,16 +130,24 @@ lper_pruned = []
 
 # Loop gets pruned trees for all 3 data sets
 for i in [(m.monk1, m.monk1test), (m.monk2, m.monk2test), (m.monk3, m.monk3test) ]:
-        best, per_ref, per_pruned = make_pruned(i[0], i[1], 0.5)
-        lbest.append(best)
-        lper_ref.append(per_ref)
-        lper_pruned.append(per_pruned)
+        for frac in [.3,.4,.5,.6,.7,.8]:
+                best, per_ref, per_pruned = make_pruned(i[0], i[1], frac)
+                lbest.append(best)
+                lper_ref.append(per_ref)
+                lper_pruned.append(per_pruned)
+'''
 print(lper_ref+lper_pruned)
 
 print_table(["Unpruned decision tree", "Pruned decision tree"],
             ["MONK1", "MONK2", "MONK3"],
-            [lper_ref, lper_pruned])
+            [lper_ref[0:6], lper_pruned[0:6]])
+'''
+print("MONK1 variation vith different fractions")
+print_table(["Unpruned decision tree", "Pruned decision tree"],
+            [0.3,0.4,0.5,0.6,0.7,0.8],
+            [lper_ref[0:6], lper_pruned[0:6]])
 
-        
-
-
+print("MONK3 variation vith different fractions")
+print_table(["Unpruned decision tree", "Pruned decision tree"],
+            [0.3,0.4,0.5,0.6,0.7,0.8],
+            [lper_ref[12:18], lper_pruned[12:18]])
