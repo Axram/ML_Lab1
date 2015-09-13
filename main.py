@@ -2,6 +2,7 @@ import monkdata as m
 import dtree as dt
 import drawtree as dw
 import random
+import matplotlib.pyplot as plt
 
 def print_average_gains(av_gain, av_gain_name = "", print_range = 6):
         #Prints with nice format
@@ -72,6 +73,14 @@ def prune(tree, testdata, performance_ref):
         else:
                 return tree
         
+def plot(x_axis,ref_data, data):
+    plt.plot(x_axis, data, label = "data")
+    plt.plot(x_axis, ref_data, label = "reference")
+    plt.ylabel("INTE classification errorm eller?")
+    plt.xlabel("Fractions")
+    plt.show()
+
+
 ## Assignment 1: Calculate entropy
 
 print("\nAssignment 1")
@@ -127,6 +136,7 @@ print_table(["Performance Train", "Performance Test"],
 lbest = []
 lper_ref = []
 lper_pruned = []
+fractions = [0.3,0.4,0.5,0.6,0.7,0.8]
 
 # Loop gets pruned trees for all 3 data sets
 for i in [(m.monk1, m.monk1test), (m.monk2, m.monk2test), (m.monk3, m.monk3test) ]:
@@ -151,3 +161,6 @@ print("MONK3 variation vith different fractions")
 print_table(["Unpruned decision tree", "Pruned decision tree"],
             [0.3,0.4,0.5,0.6,0.7,0.8],
             [lper_ref[12:18], lper_pruned[12:18]])
+
+plot(fractions, lper_ref[0:6], lper_pruned[0:6])
+plot(fractions, lper_ref[12:18], lper_pruned[12:18])
